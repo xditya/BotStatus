@@ -9,7 +9,7 @@
     "modular",
     "productivity"
   ],
-    "repository": "https://github.com/rohithaditya/Godhackerz-userbot.git",
+    "repository": "",
     "website": "https://github.com/rohithaditya/Godhackerz-userbot/tree/main",
     "success_url": "https://github.com/rohithaditya/Godhackerz-userbot/blob/main/README.md",
       "env": {
@@ -35,4 +35,12 @@
         "BOTS_USERNAME": {
           "description": "Enter Your Bot Username seprated by space",
           "value": ""
-    }
+    },
+        "YOUR_BOT_TOKEN": {
+          "description": "Enter your bot token from bot father"
+          "value": ""
+    },
+        "MESSAGE_ID": { 
+          "decription": "Something need to ask xditya"
+          "value": ""
+    },
