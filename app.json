@@ -1,6 +1,6 @@
 {
-  "name": "GODHACKERZ USERBOT",
-  "description": "A USERBOT TO MANAGE YOUR TELEGRAM ACCOUNT ",
+  "name": "Bot Status Bot",
+  "description": "LOl!! See @XDITYA FOR MORE",
   "logo": "https://telegra.ph/file/8e929112328df851306e4.jpg", 
   "keywords": [
     "telegram",
@@ -9,9 +9,9 @@
     "modular",
     "productivity"
   ],
-    "repository": "",
-    "website": "https://github.com/rohithaditya/Godhackerz-userbot/tree/main",
-    "success_url": "https://github.com/rohithaditya/Godhackerz-userbot/blob/main/README.md",
+    "repository": "https://github.com/rohithaditya/BotStatus",
+    "website": "https://github.com/rohithaditya/BotStatus",
+    "success_url": "https://github.com/rohithaditya/BotStatus",
       "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable heroku.",
