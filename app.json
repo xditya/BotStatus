@@ -1,0 +1,38 @@
+{
+  "name": "GODHACKERZ USERBOT",
+  "description": "A USERBOT TO MANAGE YOUR TELEGRAM ACCOUNT ",
+  "logo": "https://telegra.ph/file/8e929112328df851306e4.jpg", 
+  "keywords": [
+    "telegram",
+    "userbot",
+    "plugin",
+    "modular",
+    "productivity"
+  ],
+    "repository": "https://github.com/rohithaditya/Godhackerz-userbot.git",
+    "website": "https://github.com/rohithaditya/Godhackerz-userbot/tree/main",
+    "success_url": "https://github.com/rohithaditya/Godhackerz-userbot/blob/main/README.md",
+      "env": {
+    "ENV": {
+      "description": "Setting this to ANYTHING will enable heroku.",
+      "value": "ANYTHING"
+    },
+     "APP_ID": {
+      "description": "Get this value from my.telegram.org! Please do not steal",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "Get this value from my.telegram.org! Please do not steal",
+      "value": ""
+    },
+      "STRING_SESSION": {
+      "description": "Get From Repl.run Or Run Locally or https://Godhackerz-userbot.rohithaditya.repl.run", 
+      "value": ""
+    },"CHANNEL_ID": {
+      "description": "A Chnl ID Where You Want Posting Feature",
+      "value": ""
+    },
+        "BOTS_USERNAME": {
+          "description": "Enter Your Bot Username seprated by space",
+          "value": ""
+    }
