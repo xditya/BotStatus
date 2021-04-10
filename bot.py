@@ -1,9 +1,10 @@
-# (c) @xditya 
+# (c) @xditya
 # This file is a part of https://github.com/xditya/BotStatus
 
+import pytz
 import logging
 import asyncio
-import datetime
+from datetime import datetime as dt
 from telethon.tl.functions.messages import GetHistoryRequest
 from decouple import config
 from telethon.sessions import StringSession
@@ -36,7 +37,7 @@ async def BotzHub():
                 print(f"[INFO] checking @{bot}")
                 snt = await user_bot.send_message(bot, "/start")
                 await asyncio.sleep(10)
-                
+
                 history = await user_bot(GetHistoryRequest(
                     peer=bot,
                     offset_id=0,
@@ -56,9 +57,12 @@ async def BotzHub():
                 await user_bot.send_read_acknowledge(bot)
                 c += 1
                 await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
-            utc_now = datetime.datetime.utcnow()
-            ist_now = utc_now + datetime.timedelta(minutes=30, hours=5)
-            edit_text +=f"\n**Last Checked:** \n`{str(utc_now)}`\n`{ist_now} IST`\n\n__Bots status are auto-updated every 2 hours__"
+            k = pytz.timezone("Asia/Kolkata")
+            month = dt.now(k).strftime("%B")
+            day = dt.now(k).strftime("%d")
+            year =  dt.now(k).strftime("%Y")
+            t = dt.now(k).strftime("%H:%M:%S")
+            edit_text +=f"\n**Last Checked:** \n`{t} - {day} {month} {year} [IST]`\n\n__Bots status are auto-updated every 2 hours__"
             await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
             print(f"Checks since last restart - {c}")
             print("Sleeping for 2 hours.")
