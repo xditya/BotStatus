@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: 3.9
       - name: 🌀 Clone the Repo 🌀
-        uses: actions/checkout@gh-wf
+        uses: actions/checkout@master
         with:
           repository: ${{ secrets.REPO_NAME }}
       - name: 📀 Install dependencies. 📀
