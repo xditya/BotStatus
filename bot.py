@@ -1,6 +1,6 @@
 # (c) @xditya
 # This file is a part of https://github.com/xditya/BotStatus
-
+ 
 import pytz
 import logging
 import asyncio
@@ -48,6 +48,7 @@ async def BotzHub():
                     min_id=0,
                     hash=0
                 ))
+                 
                 msg = history.messages[0].id
                 if snt.id == msg:
                     print(f"@{bot} is down.")
@@ -56,7 +57,7 @@ async def BotzHub():
                     edit_text += f"@{bot} - ✅\n"
                 await user_bot.send_read_acknowledge(bot)
                 c += 1
-                await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
+            await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
             k = pytz.timezone("Asia/Kolkata")
             month = dt.now(k).strftime("%B")
             day = dt.now(k).strftime("%d")
@@ -66,6 +67,7 @@ async def BotzHub():
             await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
             print(f"Checks since last restart - {c}")
             print("Sleeping for 2 hours.")
-            await asyncio.sleep(2 * 60 * 60)
+            if c != 0:
+                break
 
 user_bot.loop.run_until_complete(BotzHub())
