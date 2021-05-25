@@ -1,0 +1,36 @@
+{
+    "name": "BotStatus",
+    "description": "Update Bot Status in your Channel!",
+    "keywords": [
+        "telegram"
+    ],
+    "repository": "https://github.com/xditya/BotStatus/tree/deploy",
+    "website": "https://xditya.me",
+    "success_url": "https://t.me/BotzHub",
+    "env": {
+        "APP_ID": {
+            "description": "Get this value from my.telegram.org",
+            "value": ""
+        },
+        "API_HASH": {
+            "description": "Get this value from my.telegram.org",
+            "value": ""
+        },
+        "SESSION": {
+            "description": "A telethon user session.",
+            "value": ""
+        },
+        "BOTS": {
+            "description": "Names of your bots separate by space, without @",
+            "value": ""
+        },
+        "CHANNEL_ID": {
+            "description": "ID of your channel.",
+            "value": ""
+        },
+        "MESSAGE_ID": {
+            "description": "ID of the message to edit.",
+            "value": ""
+        }
+    }
+}
