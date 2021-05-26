@@ -57,14 +57,14 @@ async def BotzHub():
                     edit_text += f"@{bot} - ✅\n"
                 await user_bot.send_read_acknowledge(bot)
                 c += 1
-            await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
+            await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
             k = pytz.timezone("Asia/Kolkata")
             month = dt.now(k).strftime("%B")
             day = dt.now(k).strftime("%d")
             year =  dt.now(k).strftime("%Y")
             t = dt.now(k).strftime("%H:%M:%S")
             edit_text +=f"\n**Last Checked:** \n`{t} - {day} {month} {year} [IST]`\n\n__Bots status are auto-updated every 2 hours__"
-            await user_bot.edit_message(int(chnl_id), msg_id, edit_text)
+            await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
             print(f"Checks since last restart - {c}")
             print("Sleeping for 2 hours.")
             if c != 0:
