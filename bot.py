@@ -1,16 +1,20 @@
 # (c) @xditya
 # This file is a part of https://github.com/xditya/BotStatus
- 
+
 import pytz
 import logging
 import asyncio
+from time import sleep
 from datetime import datetime as dt
 from telethon.tl.functions.messages import GetHistoryRequest
+from telethon.errors.rpcerrorlist import MessageNotModifiedError, FloodWaitError
 from decouple import config
 from telethon.sessions import StringSession
 from telethon import TelegramClient
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.INFO
+)
 
 try:
     appid = config("APP_ID")
@@ -22,52 +26,67 @@ try:
     bots = botlist.split()
     session_name = str(session)
     user_bot = TelegramClient(StringSession(session_name), appid, apihash)
-    print("Started")
+    logging.info("\n\nStarted.\nVisit @BotzHuB!")
 except Exception as e:
-    print(f"ERROR\n{str(e)}")
+    logging.info(f"ERROR\n{str(e)}")
+
 
 async def BotzHub():
     async with user_bot:
         while True:
-            print("[INFO] starting to check uptime..")
-            await user_bot.edit_message(int(chnl_id), msg_id, "**@BotzHub Bots Stats.**\n\n`Performing a periodic check...`")
+            logging.info("[INFO] starting to check uptime..")
+            try:
+                await user_bot.edit_message(
+                    int(chnl_id),
+                    msg_id,
+                    "**@BotzHub Bots Stats.**\n\n`Performing a periodic check...`",
+                )
+            except MessageNotModifiedError:
+                pass
             c = 0
             edit_text = "**@BotzHub Bots Stats.**\n\n"
             for bot in bots:
-                print(f"[INFO] checking @{bot}")
-                snt = await user_bot.send_message(bot, "/start")
-                await asyncio.sleep(10)
+                try:
+                    logging.info(f"[INFO] checking @{bot}")
+                    snt = await user_bot.send_message(bot, "/start")
+                    await asyncio.sleep(10)
 
-                history = await user_bot(GetHistoryRequest(
-                    peer=bot,
-                    offset_id=0,
-                    offset_date=None,
-                    add_offset=0,
-                    limit=1,
-                    max_id=0,
-                    min_id=0,
-                    hash=0
-                ))
-                 
-                msg = history.messages[0].id
-                if snt.id == msg:
-                    print(f"@{bot} is down.")
-                    edit_text += f"@{bot} - ❌\n"
-                elif snt.id + 1 == msg:
-                    edit_text += f"@{bot} - ✅\n"
-                await user_bot.send_read_acknowledge(bot)
-                c += 1
+                    history = await user_bot(
+                        GetHistoryRequest(
+                            peer=bot,
+                            offset_id=0,
+                            offset_date=None,
+                            add_offset=0,
+                            limit=1,
+                            max_id=0,
+                            min_id=0,
+                            hash=0,
+                        )
+                    )
+
+                    msg = history.messages[0].id
+                    if snt.id == msg:
+                        logging.info(f"@{bot} is down.")
+                        edit_text += f"@{bot} - ❌\n"
+                    elif snt.id + 1 == msg:
+                        edit_text += f"@{bot} - ✅\n"
+                    await user_bot.send_read_acknowledge(bot)
+                    c += 1
+                except FloodWaitError as f:
+                    logging.info(f"Floodwait!\n\nSleeping for {f.seconds}...")
+                    sleep(f.seconds + 10)
             await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
             k = pytz.timezone("Asia/Kolkata")
             month = dt.now(k).strftime("%B")
             day = dt.now(k).strftime("%d")
-            year =  dt.now(k).strftime("%Y")
+            year = dt.now(k).strftime("%Y")
             t = dt.now(k).strftime("%H:%M:%S")
-            edit_text +=f"\n**Last Checked:** \n`{t} - {day} {month} {year} [IST]`\n\n__Bots status are auto-updated every 2 hours__"
+            edit_text += f"\n**Last Checked:** \n`{t} - {day} {month} {year} [IST]`\n\n__Bots status are auto-updated every 2 hours__"
             await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
-            print(f"Checks since last restart - {c}")
-            print("Sleeping for 2 hours.")
+            logging.info(f"Checks since last restart - {c}")
+            logging.info("Sleeping for 2 hours.")
             if c != 0:
                 break
+
 
 user_bot.loop.run_until_complete(BotzHub())
