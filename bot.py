@@ -7,7 +7,7 @@ import asyncio
 from time import sleep
 from datetime import datetime as dt
 from telethon.tl.functions.messages import GetHistoryRequest
-from telethon.errors.rpcerrorlist import MessageNotModifiedError, FloodWaitError
+from telethon.errors.rpcerrorlist import MessageNotModifiedError, FloodWaitError, AuthKeyDuplicatedError
 from decouple import config
 from telethon.sessions import StringSession
 from telethon import TelegramClient
@@ -28,7 +28,7 @@ try:
     user_bot = TelegramClient(StringSession(session_name), appid, apihash)
     logging.info("\n\nStarted.\nVisit @BotzHuB!")
 except Exception as e:
-    logging.info(f"ERROR\n{str(e)}")
+    logging.info(f'ERROR\n{e}')
 
 
 async def BotzHub():
@@ -84,9 +84,14 @@ async def BotzHub():
             edit_text += f"\n**Last Checked:** \n`{t} - {day} {month} {year} [IST]`\n\n__Bots status are auto-updated every 2 hours__"
             await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
             logging.info(f"Checks since last restart - {c}")
-            logging.info("Sleeping for 2 hours.")
+            logging.info("Sleeping for 2 hours.") # we use workflows here.
             if c != 0:
                 break
 
+try:
+    user_bot.loop.run_until_complete(BotzHub())
+    user_bot.disconnect()   # try prevent AuthKeyDuplicatedError
+except AuthKeyDuplicatedError:
+    logging.warning("Session expired. Create a new one.")
 
-user_bot.loop.run_until_complete(BotzHub())
+print("\nProcess Completed Successfully!")
