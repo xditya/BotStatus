@@ -87,3 +87,11 @@ async def BotzHub():
             logging.info("Sleeping for 2 hours.") # we use workflows here.
             if c != 0:
                 break
+
+try:
+    user_bot.loop.run_until_complete(BotzHub())
+    user_bot.disconnect()   # try prevent AuthKeyDuplicatedError
+except AuthKeyDuplicatedError:
+    logging.warning("Session expired. Create a new one.")
+
+print("\nProcess Completed Successfully!")
