@@ -26,7 +26,7 @@ try:
     bots = botlist.split()
     session_name = str(session)
     user_bot = TelegramClient(StringSession(session_name), appid, apihash)
-    logging.info("\n\nStarted.\nVisit @BotzHuB!")
+    logging.info("\n\nStarted.\nVisit @groupdc!")
 except Exception as e:
     logging.info(f'ERROR\n{e}')
 
@@ -39,12 +39,12 @@ async def BotzHub():
                 await user_bot.edit_message(
                     int(chnl_id),
                     msg_id,
-                    "**@BotzHub Bots Stats.**\n\n`Performing a periodic check...`",
+                    "**@GroupDcBots Bots Stats.**\n\n`Performing a periodic check...`",
                 )
             except MessageNotModifiedError:
                 pass
             c = 0
-            edit_text = "**@BotzHub Bots Stats.**\n\n"
+            edit_text = "**@GroupDcBots Bots Stats.**\n\n"
             for bot in bots:
                 try:
                     logging.info(f"[INFO] checking @{bot}")
