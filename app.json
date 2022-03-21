@@ -4,7 +4,7 @@
     "keywords": [
         "telegram"
     ],
-    "repository": "https://github.com/xditya/BotStatus/tree/deploy",
+    "repository": "https://github.com/XdacchuX/BotStatus/tree/deploy",
     "website": "https://xditya.me",
     "success_url": "https://t.me/BotzHub",
     "env": {
