@@ -76,7 +76,7 @@ async def BotzHub():
                     elif snt.id + 1 == msg:
                         resp_msg = await user_bot.get_messages(bot, ids=msg)
                         time_diff = (resp_msg.date - sent_time).total_seconds() * 100
-                        edit_text += f"@{bot} - ✅ [__{time_diff}ms__]\n"
+                        edit_text += f"@{bot} - ✅ [__{round(time_diff, 3)}ms__]\n"
                     await user_bot.send_read_acknowledge(bot)
                     c += 1
                 except FloodWaitError as f:
