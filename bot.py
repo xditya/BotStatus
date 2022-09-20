@@ -4,10 +4,15 @@
 import pytz
 import logging
 import asyncio
+import contextlib
 from time import sleep
-from datetime import datetime as dt
+from datetime import timezone, datetime as dt
 from telethon.tl.functions.messages import GetHistoryRequest
-from telethon.errors.rpcerrorlist import MessageNotModifiedError, FloodWaitError, AuthKeyDuplicatedError
+from telethon.errors.rpcerrorlist import (
+    MessageNotModifiedError,
+    FloodWaitError,
+    AuthKeyDuplicatedError,
+)
 from decouple import config
 from telethon.sessions import StringSession
 from telethon import TelegramClient
@@ -28,26 +33,25 @@ try:
     user_bot = TelegramClient(StringSession(session_name), appid, apihash)
     logging.info("\n\nStarted.\nVisit @BotzHuB!")
 except Exception as e:
-    logging.info(f'ERROR\n{e}')
+    logging.info(f"ERROR\n{e}")
 
 
 async def BotzHub():
     async with user_bot:
         while True:
             logging.info("[INFO] starting to check uptime..")
-            try:
+            with contextlib.suppress(MessageNotModifiedError):
                 await user_bot.edit_message(
                     int(chnl_id),
                     msg_id,
                     "**@BotzHub Bots Stats.**\n\n`Performing a periodic check...`",
                 )
-            except MessageNotModifiedError:
-                pass
             c = 0
             edit_text = "**@BotzHub Bots Stats.**\n\n"
             for bot in bots:
                 try:
                     logging.info(f"[INFO] checking @{bot}")
+                    sent_time = dt.now(timezone.utc)
                     snt = await user_bot.send_message(bot, "/start")
                     await asyncio.sleep(10)
 
@@ -65,15 +69,18 @@ async def BotzHub():
                     )
 
                     msg = history.messages[0].id
+
                     if snt.id == msg:
-                        logging.info(f"@{bot} is down.")
+                        logging.info("@%s is down.", bot)
                         edit_text += f"@{bot} - ❌\n"
                     elif snt.id + 1 == msg:
-                        edit_text += f"@{bot} - ✅\n"
+                        resp_msg = await user_bot.get_messages(bot, ids=msg)
+                        time_diff = (resp_msg.date - sent_time).total_seconds() * 100
+                        edit_text += f"@{bot} - ✅ [__{time_diff}ms__]\n"
                     await user_bot.send_read_acknowledge(bot)
                     c += 1
                 except FloodWaitError as f:
-                    logging.info(f"Floodwait!\n\nSleeping for {f.seconds}...")
+                    logging.info("Floodwait!\n\nSleeping for %s...", f.seconds)
                     sleep(f.seconds + 10)
             await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
             k = pytz.timezone("Asia/Kolkata")
@@ -83,15 +90,16 @@ async def BotzHub():
             t = dt.now(k).strftime("%H:%M:%S")
             edit_text += f"\n**Last Checked:** \n`{t} - {day} {month} {year} [IST]`\n\n__Bots status are auto-updated every 2 hours__"
             await user_bot.edit_message(int(chnl_id), int(msg_id), edit_text)
-            logging.info(f"Checks since last restart - {c}")
-            logging.info("Sleeping for 2 hours.") # we use workflows here.
+            logging.info("Checks since last restart - %s", c)
+            logging.info("Sleeping for 2 hours.")  # we use workflows here.
             if c != 0:
                 break
 
+
 try:
     user_bot.loop.run_until_complete(BotzHub())
-    user_bot.disconnect()   # try prevent AuthKeyDuplicatedError
+    user_bot.disconnect()  # try prevent AuthKeyDuplicatedError
 except AuthKeyDuplicatedError:
     logging.warning("Session expired. Create a new one.")
 
-print("\nProcess Completed Successfully!")
+logging.info("\nProcess Completed Successfully!")
