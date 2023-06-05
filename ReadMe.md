@@ -14,6 +14,9 @@ Add them to [Settings ⇢ Secrets ⇢ New Repository Secret.](https://docs.githu
 - `CHANNEL_ID` - ID of your channel.
 - `MESSAGE_ID` - ID of the message to edit.
 
+Optional Variables:
+- `CHANNEL_NAME` - Your channel name, with @, eg: `@BotzHub`
+- `TIME_ZONE` - Time zone, see available timezone formats [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568).
+
 # Credits
-- [Jainam Oswal](https://github.com/jainamoswal/BotStatus).
 - [Me](https://xditya.me)
