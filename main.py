@@ -46,6 +46,7 @@ print("Using session: ", SESSION)
 
 # perform checks
 async def check_bots():
+    log.info("Using session: ", SESSION)
     start_time = time.time()
     bot_stats = {}
     log.info("[CHECK] Started periodic checks...")
