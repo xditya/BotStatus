@@ -42,6 +42,7 @@ except BaseException as e:
     log.warning(e)
     exit(1)
 
+print("Using session: ", SESSION)
 
 # perform checks
 async def check_bots():
