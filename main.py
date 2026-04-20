@@ -25,7 +25,7 @@ try:
     LIST_BOTS = config("BOTS")
     CHANNEL_ID = config("CHANNEL_ID", cast=int)
     MESSAGE_ID = config("MESSAGE_ID", cast=int)
-    CHANNEL_NAME = config("CHANNEL_NAME", default="@BotzHub")
+    CHANNEL_NAME = config("CHANNEL_NAME", default="@zooistore")
     TIME_ZONE = config("TIME_ZONE", default="Asia/Kolkata")
 except BaseException as ex:
     log.info(ex)
@@ -52,7 +52,7 @@ async def check_bots():
     log.info("[CHECK] Started periodic checks...")
     channel_current_msg = await client.get_messages(CHANNEL_ID, ids=MESSAGE_ID)
     new_message = (
-        "⚠️ **New periodic check in progress...** ⚠️\n\n" + channel_current_msg.text
+        "⚠️ **New check in progress...** ⚠️\n\n" + channel_current_msg.text
     )
     try:
         await client.edit_message(CHANNEL_ID, MESSAGE_ID, new_message)
@@ -82,7 +82,7 @@ async def check_bots():
                 # save stats in a dict
                 bot_stats[bot] = {
                     "response_time": None,
-                    "status": "❌",
+                    "status": "☠︎︎",
                 }
             else:
                 time_after_sending = time.time()
@@ -91,12 +91,12 @@ async def check_bots():
                 # save stats in a dict.
                 bot_stats[bot] = {
                     "response_time": f"`{round(time_taken_for_response * 1000, 3)}ms`",  # convert to ms for readability
-                    "status": "✅",
+                    "status": "✔︎",
                 }
         except BaseException:
             bot_stats[bot] = {
                 "response_time": "",
-                "status": "❌",
+                "status": "☠︎︎",
             }
         await client.send_read_acknowledge(bot)
         log.info(f"[CHECK] Checked @{bot} - {bot_stats[bot]['status']}.")
@@ -136,10 +136,10 @@ async def check_bots():
     # add last checked time
     current_time_utc = datetime.datetime.now(pytz.utc)
     current_time = current_time_utc.astimezone(pytz.timezone(TIME_ZONE))
-    status_message += f"**Last checked at** `{current_time.strftime('%H:%M:%S - %d %B %Y')}` [ __{TIME_ZONE}__ ]"
+    status_message += f"➪ Lᴀsᴛ Cʜᴇᴄᴋᴇᴅ Aᴛ `{current_time.strftime('%H:%M:%S - %d %B %Y')}` [ __{TIME_ZONE}__ ]"
 
     # add auto check message
-    status_message += f"\n\n**This message will be updated every 2 hours.**"
+    status_message += f"\n\n𝖡𝗈𝗍 𝖶𝗂𝗅𝗅 𝖢𝗁𝖾𝖼𝗄𝖾𝖽 𝖤𝗏𝖾𝗋𝗒 2 𝖧𝗈𝗎𝗋𝗌♲︎︎︎"
 
     # edit the message in the channel
     try:
